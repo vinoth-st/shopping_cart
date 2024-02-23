@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Register</h1>
+        <form method="post" action="/login">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="email"> Email</label>
+                    <input type="email" name="email" id="email" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="password"> Password</label>
+                    <input type="password" name="password" id="password" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="submit" name="submit" id="submit" value="submit" />
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+</body>
+</html>
