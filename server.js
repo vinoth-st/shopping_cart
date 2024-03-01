@@ -2,6 +2,12 @@ var express = require('express');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
+const LocalStrategy = require('passport-local').Strategy
+
+const passport = require('passport');
+const session = require('express-session');
 
 const RegisterController = require('./controllers/RegisterController');
 
@@ -15,8 +21,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false })); 
 //form-urlencoded
 
-// for parsing multipart/form-data
-app.use(express.static('public'));
+
+// Set up express-session middleware
+app.use(session({
+    secret: 'secret_key',
+    resave: false,
+    saveUninitialized: false
+  }));
+
+  // Set up Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 const PORT = 3000;
 // Connect to MongoDB
@@ -26,6 +42,47 @@ mongoose.connect('mongodb://localhost:27017/shopping_cart', { useNewUrlParser: t
 
 // Routes
 app.use('/users', userRoutes);
+
+//Models
+// require('./models/User');
+// require('./passport');
+
+
+// Configure local strategy for Passport
+passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    User.findOne({ email: email })
+      .then(user => {
+        if (!user) {
+          return done(null, false, { message: 'Incorrect email.' });
+        }
+        user.comparePassword(password)
+          .then(isMatch => {
+            if (!isMatch) {
+              return done(null, false, { message: 'Incorrect password.' });
+            }
+            return done(null, user);
+          })
+          .catch(err => done(err));
+      })
+      .catch(err => done(err));
+  }));
+
+
+// Serialize user for session
+    passport.serializeUser((user, done) => {
+        done(null, user.id);
+    });
+  
+  // Deserialize user from session
+  passport.deserializeUser((id, done) => {
+    User.findById(id)
+      .then(user => {
+        done(null, user);
+      })
+      .catch(err => {
+        done(err);
+      });
+  });
 
 
 // set the view engine to ejs

@@ -1,18 +1,15 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const session = require('express-session');
+
+// const auth = require('../routes/auth');
 const { body, validationResult } = require('express-validator');
 const app = express();
 
-// Set up express-session middleware
-app.use(session({
-    secret: 'secret_key', // Secret key for session cookie encryption
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set secure to true if using HTTPS
-  }));
+
+//Import the main Passport and Express-Session library
+const passport = require('passport')
+
 
 // Define the validation rules for the login endpoint
 exports.loginValidationRules = [
@@ -29,6 +26,15 @@ exports.index = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    // Route to handle login
+    passport.authenticate('local', { session: false }), (req, res) => {
+        // If authentication succeeds, generate JWT token
+        const token = jwt.sign({ userId: req.user._id }, 'secret_key', { expiresIn: '1h' });
+        res.json({ token });
+    }
+
+}
+exports.loginqwe = async (req, res) => {
     try {
         if (!req.session) {
             req.session = {};
@@ -63,4 +69,14 @@ exports.logout = async (req, res) => {
     }
     res.redirect('/users/login');
 
+}
+
+
+exports.dashboard = async (req, res) => {
+    res.send('Welcome');
+}
+
+exports.checkAuthenticated = (req, res, next) => {
+  if (req.isAuthenticated()) { return next() }
+  res.redirect("/users/login")
 }
