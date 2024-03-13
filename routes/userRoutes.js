@@ -12,15 +12,18 @@ router.post('/register', RegisterController.registerValidationRules, RegisterCon
 
 
 // Route to handle login
-router.post('/login', passport.authenticate('local', {
-    successRedirect: '/users/dashboard',
-    failureRedirect: '/users/login',
-    failureFlash: true
-  }));
+// router.post('/login', passport.authenticate('local', {
+//     successRedirect: '/users/dashboard',
+//     failureRedirect: '/users/login',
+//     failureFlash: true
+//   }));
+
+router.get('/login', LoginController.index);
+router.use(passport.authenticate('local', { session: false }))
+router.post('/login', LoginController.login)
 
   
 // Login
-router.get('/login', LoginController.index);
 // router.post('/login', LoginController.loginValidationRules, LoginController.login);
 router.get('/logout', LoginController.logout);
 

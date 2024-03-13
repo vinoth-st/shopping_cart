@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 // const auth = require('../routes/auth');
 const { body, validationResult } = require('express-validator');
@@ -29,7 +30,7 @@ exports.login = async (req, res) => {
     // Route to handle login
     passport.authenticate('local', { session: false }), (req, res) => {
         // If authentication succeeds, generate JWT token
-        const token = jwt.sign({ userId: req.user._id }, 'secret_key', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: req.user._id }, process.env.secret_key, { expiresIn: '1h' });
         res.json({ token });
     }
 

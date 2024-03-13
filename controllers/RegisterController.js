@@ -1,5 +1,5 @@
 var express = require('express');
-
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { body, validationResult } = require('express-validator');
@@ -30,11 +30,11 @@ exports.store = async (req, res) => {
             return res.status(400).json({ errors: errors.array() });
         }
 
-        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = new User({
             username: req.body.username,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
         });
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
