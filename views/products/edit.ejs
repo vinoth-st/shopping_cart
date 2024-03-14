@@ -12,7 +12,7 @@
 <main>
     <div class="jumbotron">
         <h1>Edit Product</h1>
-        <form action="/products/<%= product._id %>/edit" method="POST">
+        <form action="/products/<%= product._id %>/edit" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-4">
                     <label for="name">Name:</label>
@@ -29,6 +29,12 @@
                 <div class="col-md-4">
                     <label for="description">Description:</label><br>
                     <textarea id="description" name="description" rows="4" cols="50"><%= product.description %></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="description">Image:</label><br>
+                    <input type="file" name="files" accept="image/*">
                 </div>
             </div>
             <div class="row">

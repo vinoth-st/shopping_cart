@@ -12,7 +12,7 @@ router.get('/', HomeController.index);
 // Route to display product listing page
 router.get('/products', ProductController.index);
 router.get('/products/add', ProductController.add);
-router.post('/products/add', ProductController.store);
+// router.post('/products/add', ProductController.store);
 router.get('/products/:id/edit', ProductController.edit);
 router.post('/products/:id/edit', ProductController.update);
 router.get('/products/:id/delete', ProductController.delete);
