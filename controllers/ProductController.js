@@ -46,3 +46,13 @@ exports.update = async (req,res) => {
         res.status(500).send('Internal Server Error');
       }
 };
+
+exports.delete = async (req,res) => {
+    try {
+        await Product.findByIdAndDelete(req.params.id);
+        res.redirect('/products');
+      } catch (error) {
+        console.error('Error editing product:', error);
+        res.status(500).send('Internal Server Error');
+      }
+};

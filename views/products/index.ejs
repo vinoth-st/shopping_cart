@@ -1,36 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <%- include('../partials/head'); %>
-</head>
-<body class="container">
-
-<header>
-  <%- include('../partials/header'); %>
-</header>
-
-<main>
-    <div class="jumbotron">
-        <h1>Products</h1>
-        <% if (products.length > 0) { %>
-            <ul>
-                <% products.forEach(product => { %>
-                    <li>
-                        <h2><%= product.name %></h2>
-                        <p>Price: $<%= product.price %></p>
-                        <p>Description: <%= product.description %></p>
-                    </li>
-                <% }); %>
-            </ul>
-        <% } else { %>
-            <p>No products available</p>
-        <% } %>
-    </div>
-</main>
-
-<footer>
-  <%- include('../partials/footer'); %>
-</footer>
-
-</body>
-</html>
+<%- include('../common/head'); %>
+    <section class="contact_section ">
+        <div class="container">
+            <div class="heading_container heading_center">
+                <h2>
+                    Products
+                </h2>
+              </div>
+            <div class="row">
+                <table class="table table-striped">
+                    <thead>
+                        <th> Name </th>
+                        <th> Price </th>
+                        <th> Description </th>
+                        <th> Action </th>
+                    </thead>
+                    <tbody>
+                    <% if (products.length > 0) { %>
+                        <% products.forEach(product => { %>
+                            <tr>
+                                <td>
+                                    <h2><%= product.name %></h2>
+                                </td>
+                                <td>
+                                    <p>Price: $<%= product.price %></p>
+                                </td>
+                                <td>
+                                    <p>Description: <%= product.description %></p>
+                                </td>
+                                <td>
+                                    <a href="products/<%= product.id %>/edit"> Edit </a>
+                                    <a href="products/<%= product.id %>/delete"> Delete </a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr> <p>No products available</p> </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    
+    <%- include('../common/footer'); %>
+    <%- include('../common/foot'); %>

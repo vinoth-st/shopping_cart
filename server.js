@@ -1,11 +1,14 @@
 var express = require('express');
 const mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-const userRoutes = require('./routes/userRoutes');
-const productRoutes = require('./routes/productRoutes');
+// const userRoutes = require('./routes/userRoutes');
+// const productRoutes = require('./routes/productRoutes');
+const routes = require('./routes/routes');
 const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const LocalStrategy = require('passport-local').Strategy
+const HomeController = require('./controllers/HomeController');
+
 
 const passport = require('passport');
 const session = require('express-session');
@@ -17,6 +20,8 @@ var app = express();
 
 // for parsing application/json
 app.use(bodyParser.json()); 
+
+app.use(express.static(__dirname + '/src/public'));
 
 // for parsing application/xwww-
 app.use(bodyParser.urlencoded({ extended: false })); 
@@ -43,8 +48,10 @@ mongoose.connect('mongodb://localhost:27017/shopping_cart', { useNewUrlParser: t
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Routes
-app.use('/users', userRoutes);
-app.use('/products', productRoutes);
+app.use('/',routes);
+// app.use('/products', productRoutes);
+// app.use('/', userRoutes);
+// app.get('/', HomeController.index);
 
 //Models
 // require('./models/User');
